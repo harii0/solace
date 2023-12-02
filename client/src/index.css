@@ -4,48 +4,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
 :root {
   font-family: "Poppins", sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
   width: 100%;
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #E9E9E9;;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #000000;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #000000;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3em;
-  line-height: 1.1;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
