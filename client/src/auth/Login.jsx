@@ -2,7 +2,6 @@ import { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { validate } from '../helper/validate'
-import bgImage from '../assets/images/image1.png'
 import googleIcon from '../assets/images/google.svg'
 import './login.css'
 const Login = () => {
@@ -14,18 +13,19 @@ const Login = () => {
         validate: validate,
         validateOnBlur: false,
         validateOnChange: false,
-        onSubmit: (values) => {
-            console.log(values)
+        onSubmit: (values, { resetForm }) => {
+            console.log(values);
+            resetForm();
         }
     })
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 overflow-hidden">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
             <div
-                className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
+                className=" w-full h-screen relative flex flex-col space-y-8 bg-white  md:flex-row md:space-y-0"
             >
 
-                <form className="flex flex-col justify-center p-8 md:p-14" onSubmit={formik.handleSubmit}>
+                <form className=" lg:w-1/2 md:w-full flex flex-col justify-center p-8 md:p-14 sha" onSubmit={formik.handleSubmit}>
                     <span className="mb-3 text-4xl font-bold">Welcome back</span>
                     <span className="font-light text-gray-400 mb-8">
                         Please enter your details
@@ -77,14 +77,7 @@ const Login = () => {
                     </div>
                 </form>
 
-                <div className="relative">
-                    <img
-                        src={bgImage}
-                        alt="img"
-                        className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
-                    />
-
-
+                <div className="relative hidden md:block login_image lg:w-full h-screen">
                 </div>
             </div>
         </div>
