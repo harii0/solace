@@ -1,8 +1,11 @@
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import { validate } from '../helper/validate'
-// import bgImage from '../assets/images/image1.png'
-import googleIcon from '../assets/images/google.svg'
+import axios from 'axios'
+import googleIcon from '../assets/svg/google.svg'
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 import './login.css'
 import { Link } from 'react-router-dom'
 
@@ -10,22 +13,44 @@ const Register = () => {
 
     const formik = useFormik({
         initialValues: {
-            fullname: '',
+            username: '',
             email: '',
             password: '',
-            userType: '',
         },
-        validate: (values) => validate(values, true),
+        validate: (value) => validate(value, true),
         validateOnBlur: false,
         validateOnChange: false,
-        onSubmit: (values) => {
-            console.log(values)
-            if (formik.values.userType === 'psychologist') {
-                window.location.href = '/mentor'
-            }
-        }
-    })
+        onSubmit: async (value, { resetForm }) => {
+            resetForm();
+            try {
+                const res = await axios.post('http://localhost:3000/register', value, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
 
+                })
+                const status = res.data.success;
+                console.log(status)
+                if (status === true) {
+                    toast.success(' account created');
+                    window.location.href = '/login';
+                }
+                else if (status === false) {
+                    toast.error('Email already exists');
+                }
+                console.log(res)
+            }
+            catch (err) {
+                console.log(err)
+            }
+            console.log('Response:', value);
+
+
+        },
+    })
+    //show/hide password
+    const [show, setShow] = useState(false);
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
@@ -39,22 +64,24 @@ const Register = () => {
                         Please fill in the required information
                     </span>
 
-                    <div className=' lg:flex lg:flex-row lg:w-full lg:flex-wrap lg:gap-5'>
+                    <div className=' lg:flex lg:flex-row lg:w-full lg:flex-wrap lg:gap-4'>
 
 
-                        <div className="py-4 lg:w-1/3">
-                            <span className="mb-2 text-base">Full Name</span>
+                        <div className=" py-4 lg:w-1/3">
+                            <span className="mb-2 text-base">Username</span>
                             <input
-                                {...formik.getFieldProps('fullname')}
+                                {...formik.getFieldProps('username')}
                                 type="text"
+                                placeholder='Enter your full name'
                                 className="w-full p-3 border-0 border-b-2   placeholder:font-light placeholder:text-gray-500"
-                                name="fullname"
-                                id="fullname"
+                                name="username"
+                                id="username"
                             />
                         </div>
-                        <div className="py-4 lg:w-1/2">
+                        <div className="lg:mx-5 py-4 lg:w-1/2">
                             <span className="mb-2 text-base ">Email</span>
                             <input
+                                placeholder='Enter your email'
                                 {...formik.getFieldProps('email')}
                                 type="text"
                                 className="w-full p-3 border-0 border-b-2   placeholder:font-light placeholder:text-gray-500"
@@ -62,17 +89,22 @@ const Register = () => {
                                 id="email"
                             />
                         </div>
-                        <div className="py-4 lg:w-1/2">
+                        <div className="py-4 lg:w-1/2 relative">
                             <span className="mb-2 text-base">Password</span>
                             <input
+                                placeholder='create a new password'
                                 {...formik.getFieldProps('password')}
-                                type="password"
+                                type={show ? 'text' : 'password'}
                                 name="password"
                                 id="password"
-                                className="w-full p-3 border-0 border-b-2 border-gray-300 placeholder:font-light placeholder:text-gray-500"
+                                className=" relative w-full p-3 border-0 border-b-2 border-gray-300 placeholder:font-light placeholder:text-gray-500"
                             />
+                            <div className=' absolute right-0 bottom-7 text-gray-500 cursor-pointer' >
+                                {show ? <FaRegEye onClick={() => setShow(!show)} /> : <FaRegEyeSlash onClick={() => setShow(!show)} />}
+                            </div>
                         </div>
-                        <div className="py-4 w-1/3">
+
+                        <div className="  lg:mx-5 py-4 w-1/3">
                             <span className="mb-2 text-sm">Register as</span>
                             <select
                                 {...formik.getFieldProps('userType')}
@@ -80,7 +112,7 @@ const Register = () => {
                                 name="userType"
                                 id="userType"
                             >
-                                <option selected className=' text-gray-400' value="none">user</option>
+                                <option defaultValue={'user'} className=' text-gray-400' value="user">user</option>
                                 <option className=' text-gray-400' value="psychologist">Mentor</option>
                             </select>
                         </div>
@@ -91,13 +123,13 @@ const Register = () => {
                         </div>
                     </div>
                     <button
+                        type='submit'
                         className="w-full  bg-black text-white p-3 rounded-lg mb-6 hover:bg-gray-800"
                     >
                         Register
                     </button>
-                    <button
-                        className="w-full  text-md p-2 rounded-lg mb-6 flex items-center justify-center "
-                    >
+
+                    <button className="w-full  text-md p-2 rounded-lg mb-6 flex items-center justify-center ">
                         <img src={googleIcon} alt="img" className="w-6 h-6 inline mr-2" />
                         Register with Google
                     </button>
@@ -109,13 +141,7 @@ const Register = () => {
                     </div>
                 </form>
 
-                {/*<div className="relative">
-                    <img
-                        src={bgImage}
-                        alt="img"
-                        className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
-                    />
-    </div>*/}
+
             </div>
         </div>
     )

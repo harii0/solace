@@ -10,7 +10,8 @@ button {
   border: none;
 }
 .login_image {
-  background-image: url(../assets/images/image1.png);
+  background-image: url(../assets/svg/bg.svg);
   background-repeat: no-repeat;
   object-fit: cover;
+  background-position: bottom;
 }

@@ -7,8 +7,8 @@ export async function validate(values, isRegister) {
 
 function loginVerify(error = {}, values, isRegister) {
   //username
-  if (isRegister&&!values.fullname) {
-    error.fullname = toast.error("Username is required");
+  if (isRegister&&!values.username) {
+    error.username = toast.error("Username is required");
   }
   //email
   if (!values.email) {

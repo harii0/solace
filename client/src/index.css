@@ -5,4 +5,42 @@
 :root {
   font-family: "Poppins", sans-serif;
   width: 100%;
+  margin: 0;
+  background: #f1f2f6;
+}
+.text-secondary {
+  color: #d5f8e5;
+}
+body {
+  width: 100%;
+  margin: 0;
+}
+li {
+  @apply list-none;
+}
+a {
+  @apply no-underline cursor-pointer;
+  color: black;
+}
+button {
+  font-family: "Poppins", sans-serif;
+}
+input {
+  font-family: "Poppins", sans-serif;
+}
+
+.link {
+  @apply p-3 gap-2 flex text-sm  items-center md:cursor-pointer cursor-default duration-300;
+  color: #919191;
+}
+.active {
+  color: #1c1c1c;
+  border-right: #1c1c1c 3px solid;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.text-secondary {
+  color: #ababab;
+}
+.bg-secondary {
+  background-color: #d5f8e5;
 }
