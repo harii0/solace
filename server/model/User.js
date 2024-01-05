@@ -20,6 +20,18 @@ const userSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    gender: {
+      type: String,
+      default: "",
+    },
     resetpasswordToken: {
       type: String,
     },
@@ -37,7 +49,7 @@ userSchema.methods.getResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+  this.resetPasswordExpire = Date.now() + 5 * (60 * 1000);
   return resetToken;
 };
 const User = mongoose.model("User", userSchema);

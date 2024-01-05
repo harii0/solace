@@ -1,56 +1,82 @@
-// import axios from "axios";
+
+import { Toaster, toast } from 'react-hot-toast'
 import { useState } from "react";
 import { FiEdit, FiX } from "react-icons/fi";
 import { useFormik } from "formik";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "../../redux/alertSlice";
+import { setUser } from "../../redux/userSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
   const Image = {
     img: 'https://picsum.photos/200',
   }
   // storing user data
-  let storedUser = sessionStorage.getItem("user");
-  let userData = JSON.parse(storedUser);
-  if (storedUser === null) {
-    fetch('http://localhost:3000/profile', {
-      
-    })
-  }
+  const userData = useSelector((state) => state.user);
+  const username = userData?.user?.username || '';
+  const email = userData?.user?.email || '';
+  const age = userData?.user?.age || '';
+  const gender = userData?.user?.gender || '';
+  console.log(userData);
+
   //formik
   const formik = useFormik({
     initialValues: {
-      username: '',
-      email: '',
-      age: '',
-      gender: '',
+      username: username,
+      email: email,
+      age: age,
+      gender: gender,
 
     },
 
 
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: async (value, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
+
       try {
-        const res = await axios.post('http://localhost:3000/profile/update', value)
-        console.log(res);
+        dispatch(showLoading());
+
+        const res = await axios.post('http://localhost:3000/updateprofile', values);
+        const user = res.data.updatedUser;
+
+        if (res.status === 200) {
+          dispatch(setUser(user));
+          setShowForm(false);
+          toast.success('User updated successfully');
+        } else {
+          console.log('Error updating user');
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error('Error updating user');
+      } finally {
+        resetForm();
+        dispatch(hideLoading());
       }
-      catch (err) {
-        console.log(err)
-      }
-      resetForm();
-    },
+    }
   })
+
   const handleEditClick = () => {
+    dispatch(showLoading())
     setShowForm(true); // Show the form when the edit button is clicked
+    dispatch(hideLoading())
   };
 
+
   const handleCloseClick = () => {
+    dispatch(showLoading())
     setShowForm(false); // Hide the form when the close button is clicked
+    toast('User update cancelled');
+    dispatch(hideLoading())
   };
 
   return (
     <div className="rounded-sm w-full h-screen flex flex-col bg-white shadow-md py-1 ">
+      <Toaster position='top-center' reverseOrder='false'></Toaster>
       <div className="flex justify-between items-center px-5 py-1 ">
         <h1 className="font-bold text-xl">Profile</h1>
       </div>
@@ -58,8 +84,9 @@ const Profile = () => {
         <div className="flex items-center ">
           <img src={Image.img} alt="User avatar" className="w-20 rounded-full" />
           <div className="flex flex-col ml-4 gap-1">
-            <span className="font-medium text-md">{userData.username}</span>
-            <span className="font-normal text-xs text-slate-500">{userData.email}</span>
+            <span className="font-medium text-md">{username}</span>
+            <span className="font-normal text-xs text-slate-500">{email}</span>
+
           </div>
         </div>
         <button
@@ -79,25 +106,22 @@ const Profile = () => {
           <div className="flex flex-col w-1/2 px-5 py-2 gap-5">
             <span className="font-medium text-sm">Full name</span>
             <div className="px-2 py-2 bg-slate-100 rounded-sm">
-              <span className="font-normal text-sm text-slate-500 ">{userData.username}</span>
+              <span className="font-normal text-sm text-slate-500 ">{username}</span>
             </div>
             <span className=" text-sm">Age</span>
             <div className="px-2 py-2 bg-slate-100 rounded-sm">
-              <span className="font-normal text-sm text-slate-500 ">{20}</span>
+              <span className="font-normal text-sm text-slate-500 ">{age}</span>
             </div>
-            <span className=" text-sm">Gender</span>
-            <div className="px-2 py-2 bg-slate-100 rounded-sm">
-              <span className="font-normal text-sm text-slate-500 ">{'Male'}</span>
-            </div>
+
           </div>
           <div className="flex flex-col w-1/2 px-5 py-3 gap-5">
             <span className=" text-sm">Email</span>
             <div className="px-2 py-2 bg-slate-100 rounded-sm">
-              <span className="font-normal text-sm text-slate-500 ">{userData.email}</span>
+              <span className="font-normal text-sm text-slate-500 ">{email}</span>
             </div>
-            <span className=" text-sm ">Location</span>
+            <span className=" text-sm">Gender</span>
             <div className="px-2 py-2 bg-slate-100 rounded-sm">
-              <span className="font-normal text-sm text-slate-500 ">{"location"}</span>
+              <span className="font-normal text-sm text-slate-500 ">{gender}</span>
             </div>
           </div>
         </div>
@@ -111,24 +135,25 @@ const Profile = () => {
               <h2 className="text-lg font-medium px-3">Edit Profile</h2>
               <button
                 type="button"
-                className="text-gray-500 hover:bg-red-300 hover:text-white px-3 rounded-sm"
+                className=" bg-white hover:bg-red-100 px-3 mx-2 rounded-sm "
                 onClick={handleCloseClick} // Call handleCloseClick function when the close button is clicked
               >
-                <FiX size={15} />
+                <FiX size={18} />
               </button>
             </div>
             <form action="post" className="w-full flex flex-col " onSubmit={formik.handleSubmit}>
               <div className="flex flex-col  px-7 py-2 gap-4">
                 <span className="font-medium text-sm">Full name</span>
                 <input
-                  {...formik.getFieldProps('email')}
+                  {...formik.getFieldProps('username')}
                   type="text"
-                  className=" text-gray-500 px-2 py-2 bg-slate-100 rounded-sm outline-none border-none"
+                  className="  active:border-none text-gray-500 px-2 py-2 bg-slate-100 rounded-sm outline-none border-none"
 
 
                 />
                 <span className="text-sm">Email</span>
                 <input
+                  {...formik.getFieldProps('email')}
                   type="email"
                   className="  text-gray-500 px-2 py-2 bg-slate-100 rounded-sm outline-none border-none focus:outline-none"
 
@@ -141,14 +166,30 @@ const Profile = () => {
 
                 />
                 <span className="text-sm">Gender</span>
-                <select
-                  {...formik.getFieldProps('gender')}
-                  className="px-2 py-2 bg-slate-100 outline-none  border-none rounded-sm"
-
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
+                <div className="flex gap-4">
+                  <label className="text-sm">
+                    <input
+                      type="radio"
+                      value="Male"
+                      {...formik.getFieldProps('gender')}
+                      checked={formik.values.gender === 'Male'}
+                      onChange={() => formik.setFieldValue('gender', 'Male')}
+                      className="mr-1"
+                    />
+                    Male
+                  </label>
+                  <label className="text-sm">
+                    <input
+                      type="radio"
+                      value="Female"
+                      {...formik.getFieldProps('gender')}
+                      checked={formik.values.gender === 'Female'}
+                      onChange={() => formik.setFieldValue('gender', 'Female')}
+                      className="mr-1"
+                    />
+                    Female
+                  </label>
+                </div>
                 <span className="text-sm">Profile Image</span>
                 <input
                   type="file"

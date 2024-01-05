@@ -5,6 +5,7 @@ const {
   handleRegister,
   handleForgetPassword,
   handleResetPassword,
+ handleUpdateProfile,
 } = require("../controllers/user");
 
 //login
@@ -16,4 +17,5 @@ router.route("/forgetpassword").post(handleForgetPassword);
 //Resetpassword
 router.route("/resetpassword/:token").post(handleResetPassword);
 //UpdateProfile
+router.route("/updateprofile").post(handleUpdateProfile);
 module.exports = router;

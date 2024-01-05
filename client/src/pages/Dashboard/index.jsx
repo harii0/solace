@@ -13,7 +13,7 @@ const Dashboard = () => {
 
     }
     return (
-        <div className=" overflow-scroll flex w-full flex-col items-center h-screen ">
+        <div className=" overflow-hidden flex w-full flex-col items-center ">
             <div className="flex w-full flex-col">
                 <div className="w-full h-full flex flex-col md:flex-row gap-2 my-1 ">
                     <div className='flex flex-col  w-full md:w-1/3 h-screen gap-2'>

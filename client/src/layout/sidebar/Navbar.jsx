@@ -2,18 +2,18 @@
 import { FiBell } from "react-icons/fi";
 import { FaBars } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
+import { useSelector } from "react-redux";
 // eslint-disable-next-line react/prop-types
 const Navbar = ({ isOpen, setIsOpen }) => {
-   
-   const  Img={
-    avtr: 'https://picsum.photos/200',
-   }
+    const userData = useSelector((state) => state.user);
+    const Img = {
+        avtr: 'https://picsum.photos/200',
+    }
     const handleToggleSidebar = () => {
         setIsOpen(!isOpen);
     };
-    
-    const storedUser=sessionStorage.getItem('user');
-    const user=JSON.parse(storedUser);
+
+
     return (
         <nav className="mx-1 my-1 bg-white rounded-lg  h-[3rem] sm:h-15 flex items-center py-1 shadow-sm">
             <div className="flex items-center  justify-between px-4 w-full py-1">
@@ -26,7 +26,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
                 </div>
                 <div className="hidden md:block flex-shrink-0 items-center justify-center">
                     <span className=" text-lg font-medium">
-                        Welcome, {user?.username}
+                        Welcome, {userData?.user?.username}
                     </span>
                 </div>
                 <div className=" flex justify-center items-center h-full  gap-7  rounded-md">
@@ -47,7 +47,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
                         <FiBell size={20} className="text-gray-500" />
                     </div>
 
-                    <img 
+                    <img
                         className="w-9 h-9  rounded-full "
                         src={Img.avtr}
                         alt="Bordered avatar"

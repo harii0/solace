@@ -23,6 +23,7 @@ async function handleLogin(req, res) {
         username: user.username,
         email: user.email,
       };
+
       res.status(200).json({ message: "Success", token, loginUser });
     } else {
       res.status(401).json({ message: "Error" });
@@ -105,11 +106,40 @@ async function handleResetPassword(req, res) {
 
   res.status(200).json({ message: "Password reset successful" });
 }
-async function handleProfile(req, res) {}
+//
+async function handleUpdateProfile(req, res) {
+  try {
+    const email = req.body.email;
+    const user = await User.findOne({ email });
+
+    if (user) {
+      // Update the user data based on the request body
+      user.username = req.body.username || user.username;
+      user.email = req.body.email || user.email;
+      user.age = req.body.age || user.age;
+      user.gender = req.body.gender || user.gender;
+
+      // Save the updated user
+      const updatedUser = await user.save();
+
+      console.log(updatedUser);
+      res
+        .status(200)
+        .json({ message: "User updated successfully", updatedUser });
+    } else {
+      console.log("User not found");
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 module.exports = {
   handleLogin,
   handleRegister,
   handleForgetPassword,
   handleResetPassword,
-  handleProfile,
+  handleUpdateProfile,
 };

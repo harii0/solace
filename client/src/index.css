@@ -3,15 +3,25 @@
 @import "tailwindcss/utilities";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
 :root {
-  font-family: "Poppins", sans-serif;
   width: 100%;
   margin: 0;
   background: #f1f2f6;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 .text-secondary {
   color: #d5f8e5;
 }
 body {
+  font-family: "Poppins", sans-serif;
   width: 100%;
   margin: 0;
 }
@@ -24,11 +34,14 @@ a {
 }
 button {
   font-family: "Poppins", sans-serif;
+  cursor: pointer;
 }
 input {
   font-family: "Poppins", sans-serif;
 }
-
+input[type="radio"] {
+  accent-color: #1c1c1c;
+}
 .link {
   @apply p-3 gap-2 flex text-sm  items-center md:cursor-pointer cursor-default duration-300;
   color: #919191;

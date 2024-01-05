@@ -17,13 +17,16 @@ import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Forget from "./auth/Forget";
 import ResetPassword from "./auth/ResetPassword";
-
+import Loader from "./utils/Loader";
+import { useSelector } from "react-redux";
 
 const googleapi = (import.meta.env.VITE_GOOGLE_PUBLIC_API);
-
 function App() {
+
+  const { loading } = useSelector(state => state.alert);
   return (
     <GoogleOAuthProvider clientId={googleapi}>
+      {loading && <Loader />}
       <Router>
         <Routes>
           <Route path="/login" element={<PublicRoute>
