@@ -6,12 +6,19 @@ import { useFormik } from 'formik'
 import { validate } from '../helper/validate'
 import { GoogleLogin } from '@react-oauth/google';
 import axios from 'axios'
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { hideLoading, showLoading } from '../redux/alertSlice';
+
+
 
 //login component
 
 const Login = () => {
+    const dispatch = useDispatch();
+    //formik
     const formik = useFormik({
+
         initialValues: {
             email: '',
             password: '',
@@ -20,21 +27,21 @@ const Login = () => {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async (value, { resetForm }) => {
+
+            dispatch(showLoading());
             try {
                 const res = await axios.post('http://localhost:3000/login', value)
-                console.log(res);
-                const success = res.data.success;
-                console.log(success)
-                const status = res.status;
 
+
+                const status = res.status;
                 if (status === 200) {
                     toast.success('Login successful');
                     localStorage.setItem('token', res.data.token);
                     // if (res.data.loginUser.role === 'admin') {
                     //     window.location.href = '/admin/dashboard';
                     // }
-                    sessionStorage.setItem('user', JSON.stringify(res.data.loginUser));
                     window.location.href = '/dashboard';
+                    dispatch(hideLoading());
                 }
                 else if (status === !200) {
                     toast.error('Invalid credentialss');
@@ -43,6 +50,7 @@ const Login = () => {
 
             }
             catch (err) {
+                dispatch(hideLoading());
                 toast.error('Invalid credentials');
                 console.log(err)
             }
@@ -67,7 +75,7 @@ const Login = () => {
                             {...formik.getFieldProps('email')}
                             type="email"
                             placeholder='enter your email'
-                            className="w-full p-3 border-0 border-b-2   placeholder:font-light placeholder:text-gray-400"
+                            className="w-full p-3 border-0 border-gray-300 border-b-2 border-solid focus:border-black outline-none placeholder:font-light placeholder:text-gray-400"
                             name="email"
                             id="email"
                         />
@@ -81,7 +89,7 @@ const Login = () => {
                             name="password"
                             id="pass"
                             placeholder='enter your password'
-                            className="w-full p-3 border-0 border-b-2 border-gray-300 placeholder:font-light placeholder:text-gray-400"
+                            className="w-full p-3  border-0 border-b-2 border-solid focus:border-black outline-none border-gray-300 placeholder:font-light placeholder:text-gray-400"
                         />
                         <div className=' absolute right-0 bottom-7 text-gray-500 cursor-pointer' >
                             {show ? <FaRegEye onClick={() => setShow(!show)} /> : <FaRegEyeSlash onClick={() => setShow(!show)} />}
