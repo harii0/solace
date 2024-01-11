@@ -11,7 +11,7 @@ const Layout = ({ children, showSidebar = true, showNavbar = true }) => {
             {showSidebar && <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />}
             <div className="flex flex-col flex-1 overflow-hidden lg:ml-1 md:ml-0">
                 {showNavbar && <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />}
-                <main className="max-w-8xl ml-1 h-full overflow-y-scroll">{children}</main>
+                <main className="max-w-8xl pl-1 h-full overflow-y-scroll">{children}</main>
             </div>
         </div>
     );

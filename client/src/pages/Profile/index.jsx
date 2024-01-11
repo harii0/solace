@@ -219,6 +219,10 @@ const Profile = () => {
           </div>
         </div>
       )}
+      {/* End of popup form */}
+      <div className="profile w-full my-2">
+        <h4 className="font-medium text-lg mx-5">Achivements</h4>
+      </div>
     </div>
   );
 };

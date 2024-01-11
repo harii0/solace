@@ -63,8 +63,8 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen h-screen bg-gray-100 overflow-hidden">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className=" w-full h-screen relative flex flex-col space-y-1 bg-white md:h-screen md:flex-row md:space-y-0">
-                <form className=" lg:w-1/2 md:w-full flex flex-col justify-center p-8 md:p-14 shadow-2xl" onSubmit={formik.handleSubmit}>
+            <div className=" w-full h-full relative flex flex-col  bg-white md:h-screen md:flex-row ">
+                <form className=" lg:w-1/2 md:w-full flex flex-col justify-center p-8 md:p-14 md:shadow-2xl " onSubmit={formik.handleSubmit}>
                     <span className="mb-3 text-3xl font-bold">Welcome back</span>
                     <span className="font-light text-sm text-gray-400 mb-8">
                         Please enter your details
@@ -96,27 +96,26 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="flex justify-between w-full py-4">
-                        <div className="mr-24">
+                        <div className="mr-24 flex items-center">
                             <input type="checkbox" name="ch" id="ch" className="mr-2" />
                             <span className="text-xs">Remember me</span>
                         </div>
                         <Link className="font-medium text-sm" to='/forgetpassword'>Forgot password</Link>
                     </div>
+                    <div className='flex flex-col justify-center items-center w-full'>
+                        <button
+                            type='submit'
+                            className="w-full bg-black text-white p-3 rounded-lg mb-6 hover:bg-gray-800"
+                        >
+                            Sign in
+                        </button>
 
-                    <button
-                        type='submit'
-                        className="w-full bg-black text-white p-3 rounded-lg mb-6 hover:bg-gray-800"
-                    >
-                        Sign in
-                    </button>
-
-                    <GoogleLogin className='md:w-full' width='387'
-
-
-                    />
+                        <GoogleLogin width='400' />
+                    </div>
 
 
-                    <div className="text-center text-sm text-gray-400 py-5">
+
+                    <div className="text-center text-sm text-gray-400 mt-8 ">
                         Dont have an account?
                         <Link className=" font-bold text-black text-sm p-1" to='/register'>Register</Link>
                     </div>

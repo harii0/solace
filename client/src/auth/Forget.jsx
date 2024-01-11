@@ -1,7 +1,11 @@
 import { useFormik } from "formik"
 import axios from "axios"
 import { toast, Toaster } from "react-hot-toast"
+import { useDispatch } from "react-redux"
+import { showLoading } from "../redux/alertSlice"
+import { hideLoading } from "../redux/alertSlice"
 const Forget = () => {
+    const dispatch = useDispatch();
     const validate = value => {
         const errors = {}
         if (!value.email) {
@@ -21,18 +25,27 @@ const Forget = () => {
         validateOnChange: false,
         onSubmit: async (value, { resetForm }) => {
             try {
+                dispatch(showLoading());
                 const res = await axios.post('http://localhost:3000/forgetpassword', value)
+                dispatch(hideLoading());
                 const status = res.status;
                 if (status === 200) {
                     toast.success('link send to your email');
-                } else {
+                } else if (status === 401) {
                     toast.error('Email not Found')
+                } else {
+                    toast.error('Something went wrong')
                 }
 
             }
             catch (err) {
-                toast.error('Invalid credentials');
-                console.log(err)
+                dispatch(hideLoading());
+                if (err.response.status === 401) {
+                    toast.error('Email not Found')
+                }
+                else {
+                    toast.error('Invalid credentials ');
+                }
             }
             resetForm();
         },
@@ -41,11 +54,11 @@ const Forget = () => {
         <div className="flex items-center justify-center min-h-screen h-screen bg-gray-100 overflow-hidden ">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
             <div className=" w-full h-screen relative flex flex-col space-y-1 bg-white md:h-screen md:flex-row md:space-y-0">
-                <form className=" lg:w-1/2 md:w-full flex flex-col justify-center p-8 md:p-14 shadow-2xl gap-5" onSubmit={formik.handleSubmit}>
-                    <div className="flex flex-col">
+                <form className=" lg:w-1/2 md:w-full flex flex-col justify-center p-8 md:p-14 shadow-none md:shadow-2xl gap-5" onSubmit={formik.handleSubmit}>
+                    <div className="flex flex-col gap-2">
                         <span className="mb-3 text-3xl font-bold">Forget password</span>
                         <span className="font-light text-sm text-gray-400 mb-8">
-                            Please enter your email
+                            Enter your registered email address
                         </span>
                     </div>
                     <div className="py-4">
@@ -54,7 +67,7 @@ const Forget = () => {
                             {...formik.getFieldProps('email')}
                             type="email"
                             placeholder='enter your email'
-                            className="w-full p-3 border-0 border-b-2   placeholder:font-light placeholder:text-gray-400"
+                            className="w-full p-3 border-0  border-gray-300 border-b-2 border-solid focus:border-black outline-none  placeholder:font-light placeholder:text-gray-400"
                             name="email"
                             id="email"
                         />

@@ -48,7 +48,7 @@ const Chart = () => {
 
 
   const options = {
-
+    devicePixelRatio: 2,
     plugins: {
       legend: {
         position: 'bottom',
@@ -95,8 +95,12 @@ const Chart = () => {
   };
 
   return (
-    <div className="flex flex-col h-[400px] bg-white rounded-md justify-center">
-      <div className='flex w-[390px] h-[400px] justify-center items-center'>
+    <div className="flex h-[400px] bg-white rounded-md justify-center">
+      <div className='flex gap-5 flex-col w-[390px] h-[400px] '>
+        <div className='w-full px-2 py-4 flex flex-col gap-2'>
+          <span className='font-medium text-lg text-zinc-800'>Mental Wellness</span>
+          <span className='text-xs text-zinc-400 font-light w-1/2'>Track and visualize your mental well-being over time.</span>
+        </div>
         <Line options={options} data={data} />
       </div>
     </div>

@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 const PublicRoute = (props) => {
+  const navigate = useNavigate();
   if (localStorage.getItem("token")) {
-    return (window.location.href = "/dashboard");
+    return navigate("/dashboard");
   } else {
     // eslint-disable-next-line react/prop-types
     return props.children;

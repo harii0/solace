@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isDoctor: {
+      type: Boolean,
+      default: false,
+    },
     resetpasswordToken: {
       type: String,
     },

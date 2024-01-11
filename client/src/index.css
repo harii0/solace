@@ -10,6 +10,9 @@
 ::-webkit-scrollbar {
   display: none;
 }
+::selection {
+  background: #d1faef;
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

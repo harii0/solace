@@ -22,6 +22,8 @@ async function handleLogin(req, res) {
         id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin,
+        isDoctor: user.isDoctor,
       };
 
       res.status(200).json({ message: "Success", token, loginUser });
@@ -66,7 +68,7 @@ async function handleForgetPassword(req, res) {
   const email = req.body.email;
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(401).json({ message: "User not found" });
   }
   //Get reset token
   const resetToken = user.getResetToken();

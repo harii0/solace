@@ -19,6 +19,7 @@ import Forget from "./auth/Forget";
 import ResetPassword from "./auth/ResetPassword";
 import Loader from "./utils/Loader";
 import { useSelector } from "react-redux";
+import Doctor from "./pages/Doctor/Doctor";
 
 const googleapi = (import.meta.env.VITE_GOOGLE_PUBLIC_API);
 function App() {
@@ -76,7 +77,7 @@ function App() {
 
           <Route path="/doctor" element={<ProtectedRoute>
             <Layout showSidebar={true}>
-
+              <Doctor />
             </Layout>
           </ProtectedRoute>} />
           <Route path="*" element={<ProtectedRoute><Layout showSidebar={true}><Navigate to="/dashboard" /></Layout></ProtectedRoute>} />

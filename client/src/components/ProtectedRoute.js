@@ -2,14 +2,21 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProtectedRoute = (props) => {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-  const token = localStorage.getItem("token");
+
   const fetchUser = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
       const res = await axios.post(
         "http://localhost:3000/get-user",
         { token },
@@ -38,7 +45,7 @@ const ProtectedRoute = (props) => {
     // eslint-disable-next-line react/prop-types
     return props.children;
   } else {
-    return window.location.replace("/login");
+    navigate("/login");
   }
 };
 
